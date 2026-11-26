@@ -16,9 +16,9 @@ header a{color:var(--muted);text-decoration:none}
 main{max-width:1220px;margin:auto;padding:38px 24px 70px}.hero{text-align:center;margin:10px auto 36px;max-width:760px}.eyebrow{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:3px;text-transform:uppercase}.hero h1{font-size:clamp(32px,5vw,56px);line-height:1.08;letter-spacing:-2px;margin:14px 0}.hero h1 span{color:var(--accent)}.hero p{color:var(--muted);font-size:18px;margin:0 auto 22px;max-width:620px}
 .upload{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#17132e;font-weight:800;border:0;border-radius:14px;padding:15px 23px;cursor:pointer;box-shadow:0 10px 30px #8f82ff30}.upload:hover{filter:brightness(1.06);transform:translateY(-1px)}.small-note{font-size:12px;color:var(--muted);margin-top:12px}
 .reader{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow)}.reader-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}.bookname{font-size:18px;font-weight:750;overflow-wrap:anywhere}.reader-top .sub{font-size:12px;color:var(--muted)}.right-actions{display:flex;gap:10px;align-items:center}
-.btn{border:1px solid var(--line);background:transparent;color:var(--text);padding:10px 13px;border-radius:11px;cursor:pointer;font:inherit}.btn:hover{background:color-mix(in srgb,var(--accent) 12%,var(--panel))}.btn:disabled{opacity:.35;cursor:not-allowed}.stage{position:relative;min-height:420px;touch-action:pan-y;border-radius:18px;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:26px 12px;background:radial-gradient(ellipse at center,#344057 0%,#1a2435 48%,#111827 100%)}
+.btn{border:1px solid var(--line);background:transparent;color:var(--text);padding:10px 13px;border-radius:11px;cursor:pointer;font:inherit}.btn:hover{background:color-mix(in srgb,var(--accent) 12%,var(--panel))}.btn:disabled{opacity:.35;cursor:not-allowed}.stage{position:relative;min-height:420px;touch-action:pan-y;border-radius:18px;overflow:auto;display:flex;padding:26px 12px;background:radial-gradient(ellipse at center,#344057 0%,#1a2435 48%,#111827 100%)}
 body[data-theme="light"] .stage{background:radial-gradient(ellipse at center,#e7eaf0,#cfd5df)}body[data-theme="wood"] .stage{background:repeating-linear-gradient(90deg,#5a3c27 0,#5a3c27 3px,#69472d 5px,#49301f 12px)}
-#book{margin:auto;width:100%;display:flex;justify-content:center;align-items:center}.page{background:#fff;color:#20202a;overflow:hidden;box-sizing:border-box}.page img{width:100%;height:100%;display:block;object-fit:fill}.sample-page{width:100%;height:100%;padding:10%;background:linear-gradient(140deg,#fff,#f5f0e6);color:#2c2b33;display:flex;flex-direction:column;justify-content:space-between}.sample-page .s-label{font-size:10px;letter-spacing:2px;color:#777}.sample-page h2{font:700 28px/1.12 Georgia,serif;margin:12px 0}.sample-page p{font:13px/1.7 Georgia,serif;color:#4b4a50}.sample-page .s-foot{font-size:10px;color:#777;display:flex;justify-content:space-between}.sample-cover{background:linear-gradient(145deg,#18243c,#526b87);color:#fff;justify-content:center;text-align:center}.sample-cover h2{font-size:32px}.sample-cover p{color:#e2eaf5}.toolbar{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;padding:18px 0 4px}.toolbar .separator{height:26px;width:1px;background:var(--line);margin:0 5px}.pagebox{width:64px;text-align:center;padding:10px 5px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--text);font:inherit}.status{text-align:center;color:var(--muted);font-size:12px;min-height:20px;margin-top:12px}.below{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px}.theme-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.theme-controls label{font-size:12px;color:var(--muted)}select{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px}
+#book{margin:auto;flex:none}.page{position:relative}.page{background:#fff;color:#20202a;overflow:hidden;box-sizing:border-box}.page img{width:100%;height:100%;display:block;object-fit:fill}.sample-page{width:100%;height:100%;padding:10%;background:linear-gradient(140deg,#fff,#f5f0e6);color:#2c2b33;display:flex;flex-direction:column;justify-content:space-between}.sample-page .s-label{font-size:10px;letter-spacing:2px;color:#777}.sample-page h2{font:700 28px/1.12 Georgia,serif;margin:12px 0}.sample-page p{font:13px/1.7 Georgia,serif;color:#4b4a50}.sample-page .s-foot{font-size:10px;color:#777;display:flex;justify-content:space-between}.sample-cover{background:linear-gradient(145deg,#18243c,#526b87);color:#fff;justify-content:center;text-align:center}.sample-cover h2{font-size:32px}.sample-cover p{color:#e2eaf5}.toolbar{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;padding:18px 0 4px}.toolbar .separator{height:26px;width:1px;background:var(--line);margin:0 5px}.pagebox{width:64px;text-align:center;padding:10px 5px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--text);font:inherit}.status{text-align:center;color:var(--muted);font-size:12px;min-height:20px;margin-top:12px}.below{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px}.theme-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.theme-controls label{font-size:12px;color:var(--muted)}select{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px}
 .thumb-panel{display:none;margin-top:16px;border-top:1px solid var(--line);padding-top:16px}.thumb-panel.open{display:block}.thumb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:10px;max-height:280px;overflow:auto}.thumb{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:5px;cursor:pointer;color:var(--muted);font-size:11px}.thumb img{width:100%;aspect-ratio:3/4;object-fit:contain;background:#fff;display:block;margin-bottom:5px}.thumb.active{border-color:var(--accent);box-shadow:0 0 0 2px #a99bff33}
 footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}.hidden{display:none!important}
 @media(max-width:650px){header{height:64px;padding:0 16px}main{padding:24px 12px 45px}.hero{margin-bottom:25px}.hero p{font-size:15px}.reader{padding:12px;border-radius:18px}.stage{padding:14px 2px;min-height:280px}.reader-top{align-items:flex-start}.right-actions{width:100%;justify-content:space-between}.toolbar{gap:6px}.btn{padding:9px 10px;font-size:13px}.below{align-items:flex-start}.sample-page h2{font-size:22px}.sample-page p{font-size:10px}}
@@ -29,9 +29,9 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}.hidd
 <header><div class="brand"><span class="logo">▤</span> PageTurn</div><a href="https://github.com/" target="_blank" rel="noopener">GitHub ↗</a></header>
 <main>
 <section class="hero"><div class="eyebrow">Your document, reimagined</div><h1>Turn a PDF into a <span>flipbook.</span></h1><p>Choose a PDF and read it like a real book. Your document stays in your browser.</p><label class="upload" for="pdfFile">↑ Upload Your PDF</label><input id="pdfFile" class="hidden" type="file" accept="application/pdf,.pdf"><div class="small-note">No account · No server upload · Works on mobile and desktop</div></section>
-<section class="reader">
+<section class="reader" id="reader">
 <div class="reader-top"><div><div class="bookname" id="bookName">Sample Book — The Art of Reading</div><div class="sub" id="pageCount">A short preview · 6 pages</div></div><div class="right-actions"><label class="btn" for="pdfFile">＋ New PDF</label><button class="btn" id="downloadBtn">↓ Download PDF</button></div></div>
-<div class="stage" id="stage"><div id="book"></div></div>
+<div class="stage" id="stage"></div>
 <div class="toolbar">
 <button class="btn" id="firstBtn" title="First page">|‹</button><button class="btn" id="prevBtn" title="Previous page">←</button>
 <span id="pageLabel">Page</span><input class="pagebox" id="pageInput" type="number" min="1" value="1" aria-label="Page number"><span id="totalLabel">/ 6</span>
@@ -47,68 +47,160 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}.hidd
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 <script>
-(()=> {
+(()=>{
 "use strict";
 const $=id=>document.getElementById(id);
-const pdfInput=$("pdfFile"),bookEl=$("book"),stage=$("stage");
-let flip=null,pdfDoc=null,currentFile=null,pageCount=6,zoom=1,soundOn=true,renderToken=0,thumbUrls=[],pageImages=[],thumbImages=[],audioCtx=null;
+const stage=$("stage"),pdfInput=$("pdfFile");
+let flip=null,bookEl=null,pdfDoc=null,currentFile=null,pageCount=6,zoom=1,soundOn=true,token=0,aspect=1.414,cur={w:300,h:424,landscape:true},sample=true,pages=[],thumbEls=[],audioCtx=null,noiseBuf=null,thumbUrls=[],pageUrls=[],imgEls=[];
+const setStatus=s=>$("status").textContent=s;
 const isMobile=()=>matchMedia("(max-width:650px)").matches;
-function setStatus(s){$("status").textContent=s}
-function clearBook(){if(flip){try{flip.destroy()}catch(e){}flip=null}bookEl.innerHTML="";pageImages=[];thumbImages=[]}
-function sizeBook(){const available=Math.max(220,stage.clientWidth-28);const portrait=matchMedia("(max-width:650px)").matches;const w=Math.max(180,Math.min(460,portrait?available:available/2))*zoom;const h=Math.min(window.innerHeight*.72,Math.max(280,w*1.414));return {width:Math.round(w),height:Math.round(h)}}
-function initFlip(mode="html"){if(!window.St||typeof St.PageFlip!=="function"){setStatus("Page-turn library did not load. Check your internet connection, then refresh.");throw new Error("St.PageFlip unavailable; verify the CDN script URL.");}const s=sizeBook();flip=new St.PageFlip(bookEl,{width:s.width,height:s.height,size:"stretch",minWidth:180,maxWidth:900,minHeight:250,maxHeight:1300,drawShadow:true,flippingTime:900,usePortrait:true,showCover:false,mobileScrollSupport:false,clickEventForward:true,swipeDistance:24,showPageCorners:true,disableFlipByClick:false,autoSize:true});if(mode==="images")flip.loadFromImages(pageImages);else flip.loadFromHTML(bookEl.querySelectorAll(".page"));flip.on("flip",e=>{const n=e.data+1;$("pageInput").value=n;syncButtons();playPaper();});syncButtons()}
-function syncButtons(){const n=flip?flip.getCurrentPageIndex()+1:1;$("pageInput").value=n;$("totalLabel").textContent="/ "+pageCount;$("prevBtn").disabled=$("firstBtn").disabled=n<=1;$("nextBtn").disabled=$("lastBtn").disabled=n>=pageCount;const th=$("thumbGrid").querySelectorAll(".thumb");th.forEach((x,i)=>x.classList.toggle("active",i===n-1))}
-function go(n){if(!flip)return;n=Math.max(1,Math.min(pageCount,Math.floor(Number(n)||1)));flip.flip(n-1);syncButtons()}
-function playPaper(){if(!soundOn)return;try{audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();const ctx=audioCtx,now=ctx.currentTime,duration=.24;const buffer=ctx.createBuffer(1,Math.floor(ctx.sampleRate*duration),ctx.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<data.length;i++){const t=i/data.length;const envelope=Math.pow(Math.sin(Math.PI*t),1.6)*(1-.35*t);data[i]=(Math.random()*2-1)*envelope;}const src=ctx.createBufferSource(),bp=ctx.createBiquadFilter(),lp=ctx.createBiquadFilter(),gain=ctx.createGain();src.buffer=buffer;bp.type="bandpass";bp.frequency.setValueAtTime(1500,now);bp.Q.value=.55;lp.type="lowpass";lp.frequency.value=4200;gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(.045,now+.025);gain.gain.exponentialRampToValueAtTime(.0001,now+duration);src.connect(bp);bp.connect(lp);lp.connect(gain);gain.connect(ctx.destination);src.start(now);src.stop(now+duration);const tick=ctx.createOscillator(),tg=ctx.createGain();tick.type="triangle";tick.frequency.setValueAtTime(180,now);tick.frequency.exponentialRampToValueAtTime(90,now+.055);tg.gain.setValueAtTime(.0001,now);tg.gain.exponentialRampToValueAtTime(.008,now+.008);tg.gain.exponentialRampToValueAtTime(.0001,now+.065);tick.connect(tg);tg.connect(ctx.destination);tick.start(now);tick.stop(now+.07);}catch(e){}}function ensurePages(center){if(!bookEl.children.length)return;for(let i=Math.max(0,center-2);i<Math.min(pageCount,center+4);i++){const img=bookEl.children[i]?.querySelector("img");if(img&&!img.src&&pageImages[i])img.src=pageImages[i]}}
-function samplePages(){clearBook();pdfDoc=null;currentFile=null;pageCount=6;$("bookName").textContent="Sample Book — The Art of Reading";$("pageCount").textContent="A short preview · 6 pages";$("downloadBtn").disabled=true;
+
+/* ---------- layout: explicit pixel sizes (fixes the phone issue) ---------- */
+function layout(){
+ const availW=Math.max(200,stage.clientWidth-24),maxH=document.fullscreenElement?innerHeight-210:innerHeight*.8,landscape=availW>=640;
+ let w=Math.min(landscape?availW/2:availW,maxH/aspect,landscape?700:520);
+ w=Math.max(150,Math.floor(w*zoom));
+ return{w,h:Math.round(w*aspect),landscape};
+}
 const content=[
 ["THE ART OF READING","A little room for curiosity","A book is a doorway. Turn a page and the world changes: a new idea, a new place, a new way to see something familiar.","sample-cover"],
 ["A quiet beginning","Make space for wonder","Reading is not a race. It is a conversation between the page and your attention. Give an idea a moment to settle before moving on.",""],
 ["Look closer","Details make the story","Notice the small things: a phrase that stays with you, a diagram that makes sense at last, or a question you had never thought to ask.",""],
 ["Take your time","One page at a time","The best reading experience is the one that lets you focus. Find a comfortable pace and let the pages carry you forward.",""],
 ["Keep exploring","Curiosity has no last page","Return to a passage. Follow a footnote. Share what you learned. A good book keeps opening long after it is closed.",""],
-["THANK YOU","Your next book starts here","Upload your own PDF and turn it into a page-turning reading experience. Your document stays on your device.","sample-cover"]
-];
-content.forEach((p,i)=>{const el=document.createElement("div");el.className="page";el.innerHTML=`<div class="sample-page ${p[3]}"><div><div class="s-label">PAGETURN · SAMPLE</div><h2>${p[0]}</h2><p>${p[1]}</p><p>${p[2]}</p></div><div class="s-foot"><span>PAGE TURN</span><span>${i+1}</span></div></div>`;bookEl.appendChild(el)});
-try{initFlip("html");makeSampleThumbs();syncButtons();setStatus("Sample book ready. Drag a page corner or use the arrows to flip.");}
-catch(err){console.error(err);bookEl.style.display="block";bookEl.style.maxWidth="420px";bookEl.style.margin="0 auto";bookEl.querySelectorAll(".page").forEach((el,i)=>{el.style.display=i===0?"block":"none";el.style.width="100%";el.style.height="520px"});makeSampleThumbs();setStatus("Flip animation could not start. Please refresh with internet access; the sample preview is shown.");}
+["THANK YOU","Your next book starts here","Upload your own PDF and turn it into a page-turning reading experience. Your document stays on your device.","sample-cover"]];
+
+/* ---------- build the flipbook (always a FRESH container: PageFlip.destroy() removes its container from the DOM) ---------- */
+function build(start=0){
+ if(flip){try{flip.destroy()}catch(e){}flip=null}
+ if(bookEl&&bookEl.isConnected)bookEl.remove();
+ bookEl=document.createElement("div");bookEl.id="book";stage.appendChild(bookEl);
+ if(!window.St||typeof St.PageFlip!=="function"){setStatus("Page-turn library failed to load. Check your internet connection and refresh.");return}
+ cur=layout();
+ bookEl.style.width=(cur.landscape?cur.w*2+1:cur.w)+"px";bookEl.style.height=cur.h+"px";
+ imgEls=[];
+ for(let i=0;i<pageCount;i++){
+  const d=document.createElement("div");d.className="page";
+  if(sample){const p=content[i];d.innerHTML=`<div class="sample-page ${p[3]}"><div><div class="s-label">PAGETURN · SAMPLE</div><h2>${p[0]}</h2><p>${p[1]}</p><p>${p[2]}</p></div><div class="s-foot"><span>PAGE TURN</span><span>${i+1}</span></div></div>`}
+  else{const im=document.createElement("img");im.alt="Page "+(i+1);im.draggable=false;if(pageUrls[i])im.src=pageUrls[i];d.appendChild(im);imgEls[i]=im}
+  bookEl.appendChild(d);
+ }
+ try{
+  flip=new St.PageFlip(bookEl,{width:cur.w,height:cur.h,size:"fixed",showCover:true,usePortrait:true,drawShadow:true,flippingTime:800,maxShadowOpacity:.5,mobileScrollSupport:false,swipeDistance:20,showPageCorners:!isMobile(),clickEventForward:true,useMouseEvents:true});
+  flip.loadFromHTML(bookEl.querySelectorAll(".page"));
+  flip.on("flip",()=>syncButtons());
+  flip.on("changeState",e=>{if(e.data==="flipping")playPaper()});
+  if(start)flip.turnToPage(Math.min(start,pageCount-1));
+ }catch(err){console.error(err);setStatus("Flip animation could not start: "+err.message)}
+ syncButtons();
 }
-function makeSampleThumbs(){thumbUrls=[];$("thumbGrid").innerHTML="";for(let i=0;i<pageCount;i++){const b=document.createElement("button");b.className="thumb";b.innerHTML=`<div style="aspect-ratio:3/4;background:linear-gradient(140deg,#fefcf5,#e8e1d5);display:grid;place-items:center;color:#4c5260;font:12px Georgia,serif">Page ${i+1}</div>${i+1}`;b.onclick=()=>go(i+1);$("thumbGrid").appendChild(b)}}
-async function loadPdf(file){if(!file)return;if(file.type!=="application/pdf"&&!file.name.toLowerCase().endsWith(".pdf")){setStatus("Please choose a PDF file.");return}
-const token=++renderToken;setStatus("Opening PDF…");clearBook();if(pdfDoc){try{await pdfDoc.destroy()}catch(e){}}thumbUrls.forEach(u=>URL.revokeObjectURL(u));pageImages.forEach(u=>URL.revokeObjectURL(u));thumbUrls=[];pageImages=[];thumbImages=[];
-currentFile=file;$("bookName").textContent=file.name;$("downloadBtn").disabled=false;
-try{
-const bytes=await file.arrayBuffer();if(token!==renderToken)return;
-pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-pdfDoc=await pdfjsLib.getDocument({data:bytes,disableAutoFetch:true,disableStream:true}).promise;pageCount=pdfDoc.numPages;$("pageCount").textContent=`${pageCount} pages`;setStatus(`Preparing pages · 0 / ${pageCount}`);
-const s=sizeBook(),renderScale=Math.min(1.6,Math.max(1.05,(window.devicePixelRatio||1)*.85)); // capped to reduce phone memory
-// Render compact JPEG pages sequentially, releasing each canvas immediately.
-for(let i=1;i<=pageCount;i++){
-if(token!==renderToken)return;
-const page=await pdfDoc.getPage(i),vp=page.getViewport({scale:renderScale});
-const maxPixels=1.65e6,ratio=Math.min(1,Math.sqrt(maxPixels/(vp.width*vp.height))),canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.floor(vp.width*ratio));canvas.height=Math.max(1,Math.floor(vp.height*ratio));
-const ctx=canvas.getContext("2d",{alpha:false});await page.render({canvasContext:ctx,viewport:page.getViewport({scale:renderScale*ratio}),background:"#ffffff"}).promise;
-const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",.86));const url=URL.createObjectURL(blob);thumbUrls.push(url);pageImages.push(url);
-canvas.width=canvas.height=0;page.cleanup();
-const div=document.createElement("div");div.className="page";const img=document.createElement("img");img.loading="lazy";img.alt=`PDF page ${i}`;img.src=url;div.appendChild(img);bookEl.appendChild(div);
-if(i%5===0||i===pageCount)setStatus(`Rendering PDF pages · ${i} / ${pageCount}`);
+function syncButtons(){
+ const n=flip?flip.getCurrentPageIndex()+1:1;
+ $("pageInput").value=n;$("totalLabel").textContent="/ "+pageCount;$("pageInput").max=pageCount;
+ $("prevBtn").disabled=$("firstBtn").disabled=n<=1;$("nextBtn").disabled=$("lastBtn").disabled=n>=pageCount;
+ thumbEls.forEach((x,i)=>x.classList.toggle("active",i===n-1));
 }
-if(token!==renderToken)return;
-initFlip("images");makeThumbs();syncButtons();setStatus(`Flipbook ready · ${pageCount} pages. Drag a page corner or tap the arrows to turn pages.`);
-}catch(err){console.error(err);setStatus("Could not open this PDF. Try a smaller or unprotected PDF.");}
+function go(n){if(!flip)return;n=Math.max(1,Math.min(pageCount,Math.floor(Number(n)||1)));flip.flip(n-1);syncButtons()}
+function rebuild(){if(!flip)return;build(flip.getCurrentPageIndex())}
+
+/* ---------- thumbnails ---------- */
+function makeThumbs(){
+ const g=$("thumbGrid");g.innerHTML="";thumbEls=[];
+ for(let i=0;i<pageCount;i++){
+  const b=document.createElement("button");b.className="thumb";
+  if(sample){b.innerHTML=`<div style="aspect-ratio:3/4;background:linear-gradient(140deg,#fefcf5,#e8e1d5);display:grid;place-items:center;color:#4c5260;font:12px Georgia,serif">Page ${i+1}</div>${i+1}`}
+  else{const im=document.createElement("img");im.alt="Page "+(i+1);const s=document.createElement("span");s.textContent=i+1;b.append(im,s)}
+  b.onclick=()=>go(i+1);g.appendChild(b);thumbEls.push(b);
+ }
 }
-function makeThumbs(){const grid=$("thumbGrid");grid.innerHTML="";thumbImages.forEach((src,i)=>{const b=document.createElement("button");b.className="thumb";const img=document.createElement("img");img.loading="lazy";img.src=src;img.alt=`Page ${i+1}`;const label=document.createElement("span");label.textContent=i+1;b.append(img,label);b.onclick=()=>go(i+1);grid.appendChild(b)})}
-pdfInput.addEventListener("change",e=>loadPdf(e.target.files[0]));
-$("prevBtn").onclick=()=>flip&&flip.flipPrev();$("nextBtn").onclick=()=>flip&&flip.flipNext();$("firstBtn").onclick=()=>go(1);$("lastBtn").onclick=()=>go(pageCount);$("pageInput").addEventListener("change",e=>go(e.target.value));$("pageInput").addEventListener("keydown",e=>{if(e.key==="Enter")go(e.target.value)});
-$("zoomIn").onclick=()=>{zoom=Math.min(1.35,zoom+.1);rebuildSizing()};$("zoomOut").onclick=()=>{zoom=Math.max(.65,zoom-.1);rebuildSizing()};
-function rebuildSizing(){if(!flip)return;const n=flip.getCurrentPageIndex();try{if(currentFile)flip.updateFromImages(pageImages);else flip.updateFromHtml(bookEl.querySelectorAll(".page"));flip.turnToPage(Math.min(n,pageCount-1));}catch(e){console.warn(e)}}
-$("thumbBtn").onclick=()=>{$("thumbPanel").classList.toggle("open");$("thumbBtn").textContent=$("thumbPanel").classList.contains("open")?"▦ Hide thumbnails":"▦ Thumbnails"};
+
+/* ---------- sample ---------- */
+function showSample(){
+ token++;sample=true;pageCount=6;aspect=1.414;currentFile=null;pageUrls=[];
+ $("bookName").textContent="Sample Book — The Art of Reading";$("pageCount").textContent="A short preview · 6 pages";$("downloadBtn").disabled=true;
+ makeThumbs();build(0);setStatus("Sample book ready. Drag a page corner or use the arrows to flip.");
+}
+
+/* ---------- PDF loading: flipbook appears immediately, pages fill in as they render ---------- */
+const toBlob=(c,q)=>new Promise(r=>c.toBlob(r,"image/jpeg",q));
+async function loadPdf(file){
+ if(!file)return;
+ if(file.type!=="application/pdf"&&!file.name.toLowerCase().endsWith(".pdf")){setStatus("Please choose a PDF file.");return}
+ const tok=++token;setStatus("Opening PDF…");
+ const old=pdfDoc;pdfDoc=null;if(old){old.destroy().catch(()=>{})}
+ thumbUrls.forEach(u=>URL.revokeObjectURL(u));pageUrls.forEach(u=>u&&URL.revokeObjectURL(u));thumbUrls=[];pageUrls=[];
+ currentFile=file;
+ try{
+  const bytes=await file.arrayBuffer();if(tok!==token)return;
+  pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  const doc=await pdfjsLib.getDocument({data:bytes}).promise;if(tok!==token){doc.destroy();return}
+  pdfDoc=doc;pageCount=doc.numPages;
+  const v=(await doc.getPage(1)).getViewport({scale:1});aspect=v.height/v.width;
+  sample=false;$("bookName").textContent=file.name;$("pageCount").textContent=pageCount+" pages";$("downloadBtn").disabled=false;
+  makeThumbs();build(0);
+  renderAll(tok,doc);
+ }catch(err){console.error(err);setStatus("Could not open this PDF: "+(err&&err.message||err))}
+}
+async function renderAll(tok,doc){
+ const dpr=Math.min(devicePixelRatio||1,2.5),maxW=isMobile()?1400:1900;
+ for(let i=0;i<pageCount;i++){
+  if(tok!==token)return;
+  try{
+   const page=await doc.getPage(i+1),w0=page.getViewport({scale:1}).width;
+   const target=Math.min(maxW,Math.max(1000,cur.w*dpr*1.6)),vp=page.getViewport({scale:target/w0});
+   const c=document.createElement("canvas");c.width=Math.floor(vp.width);c.height=Math.floor(vp.height);
+   await page.render({canvasContext:c.getContext("2d",{alpha:false}),viewport:vp,background:"#ffffff"}).promise;
+   const tc=document.createElement("canvas");tc.width=140;tc.height=Math.round(140*c.height/c.width);tc.getContext("2d").drawImage(c,0,0,tc.width,tc.height);
+   const [blob,tb]=await Promise.all([toBlob(c,.92),toBlob(tc,.75)]);
+   c.width=c.height=0;page.cleanup();
+   if(tok!==token)return;
+   const url=URL.createObjectURL(blob),turl=URL.createObjectURL(tb);pageUrls[i]=url;thumbUrls.push(turl);
+   if(imgEls[i])imgEls[i].src=url;
+   const ti=thumbEls[i]&&thumbEls[i].querySelector("img");if(ti)ti.src=turl;
+  }catch(e){console.warn("Page "+(i+1)+" failed",e)}
+  setStatus(i===pageCount-1?`Flipbook ready · ${pageCount} pages. Drag a page corner or tap the arrows.`:`Rendering pages · ${i+1} / ${pageCount} (you can start reading now)`);
+ }
+}
+
+/* ---------- page-turn sound: crinkly paper swish + soft thwap ---------- */
+function makeNoise(ctx){
+ const len=Math.floor(ctx.sampleRate*.45),b=ctx.createBuffer(1,len,ctx.sampleRate),d=b.getChannelData(0);let lp=0,crack=0;
+ for(let i=0;i<len;i++){const t=i/len;lp+=((Math.random()*2-1)-lp)*.4;if(Math.random()<.012)crack=Math.random()*1.5;crack*=.93;
+  const env=Math.sin(Math.PI*Math.pow(t,.7))*(1-t*.5);d[i]=(lp*.6+(Math.random()*2-1)*crack*.8)*env}
+ return b;
+}
+function unlockAudio(){try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume()}catch(e){}}
+["pointerdown","keydown","touchstart"].forEach(ev=>addEventListener(ev,unlockAudio,{passive:true}));
+function playPaper(){
+ if(!soundOn)return;
+ try{
+  unlockAudio();const ctx=audioCtx,now=ctx.currentTime;noiseBuf=noiseBuf||makeNoise(ctx);
+  const src=ctx.createBufferSource(),bp=ctx.createBiquadFilter(),hp=ctx.createBiquadFilter(),g=ctx.createGain();
+  src.buffer=noiseBuf;src.playbackRate.value=.9+Math.random()*.25;
+  bp.type="bandpass";bp.Q.value=.7;bp.frequency.setValueAtTime(1800,now);bp.frequency.exponentialRampToValueAtTime(5000,now+.35);
+  hp.type="highpass";hp.frequency.value=500;g.gain.value=1.1;
+  src.connect(bp);bp.connect(hp);hp.connect(g);g.connect(ctx.destination);src.start(now);
+  const s2=ctx.createBufferSource(),lp=ctx.createBiquadFilter(),g2=ctx.createGain();
+  s2.buffer=noiseBuf;lp.type="lowpass";lp.frequency.value=700;g2.gain.setValueAtTime(.0001,now+.2);g2.gain.linearRampToValueAtTime(.6,now+.22);g2.gain.exponentialRampToValueAtTime(.0001,now+.34);
+  s2.connect(lp);lp.connect(g2);g2.connect(ctx.destination);s2.start(now+.2,0,.15);
+ }catch(e){}
+}
+
+/* ---------- controls ---------- */
+pdfInput.addEventListener("change",e=>{loadPdf(e.target.files[0]);e.target.value=""});
+$("prevBtn").onclick=()=>flip&&flip.flipPrev();$("nextBtn").onclick=()=>flip&&flip.flipNext();
+$("firstBtn").onclick=()=>go(1);$("lastBtn").onclick=()=>go(pageCount);
+$("pageInput").addEventListener("change",e=>go(e.target.value));
+$("zoomIn").onclick=()=>{zoom=Math.min(2,+(zoom+.2).toFixed(1));rebuild()};
+$("zoomOut").onclick=()=>{zoom=Math.max(.6,+(zoom-.2).toFixed(1));rebuild()};
+$("thumbBtn").onclick=()=>{const o=$("thumbPanel").classList.toggle("open");$("thumbBtn").textContent=o?"▦ Hide thumbnails":"▦ Thumbnails"};
 $("soundBtn").onclick=()=>{soundOn=!soundOn;$("soundBtn").textContent=soundOn?"♬ Sound On":"♬ Sound Off";$("soundBtn").setAttribute("aria-pressed",soundOn)};
 $("themeSelect").onchange=e=>document.body.dataset.theme=e.target.value;
-$("fullBtn").onclick=async()=>{const el=$("reader");try{if(!document.fullscreenElement)await el.requestFullscreen();else await document.exitFullscreen()}catch(e){setStatus("Fullscreen isn't supported in this browser.")}};
-document.addEventListener("fullscreenchange",()=>setTimeout(rebuildSizing,250));let resizeTimer;window.addEventListener("resize",()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(rebuildSizing,350)});
-$("downloadBtn").onclick=()=>{if(!currentFile)return;const url=URL.createObjectURL(currentFile),a=document.createElement("a");a.href=url;a.download=currentFile.name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
-samplePages();
+$("fullBtn").onclick=async()=>{try{if(!document.fullscreenElement)await $("reader").requestFullscreen();else await document.exitFullscreen()}catch(e){setStatus("Fullscreen isn't supported in this browser.")}};
+document.addEventListener("fullscreenchange",()=>setTimeout(rebuild,300));
+let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{const L=layout();if(L.landscape!==cur.landscape||Math.abs(L.w-cur.w)>8)rebuild()},350)});
+$("downloadBtn").onclick=()=>{if(!currentFile)return;const u=URL.createObjectURL(currentFile),a=document.createElement("a");a.href=u;a.download=currentFile.name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)};
+showSample();
 })();
 </script>
 </body></html>

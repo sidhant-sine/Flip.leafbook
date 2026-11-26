@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PageTurn — PDF Flipbook</title>
+<meta name="description" content="Turn any PDF into a beautiful interactive flipbook.">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<style>
+:root{--bg:#0c1220;--panel:#131c2d;--line:#27344a;--text:#eef3ff;--muted:#a4b1c8;--accent:#a99bff;--shadow:0 24px 70px #0008}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body[data-theme="light"]{--bg:#f4f5f8;--panel:#fff;--line:#dce1ea;--text:#20283a;--muted:#667085;--shadow:0 24px 70px #20283a22}
+body[data-theme="wood"]{--bg:#35251c;--panel:#422e22;--line:#72533a;--text:#fff2df;--muted:#d0b69b;--shadow:0 24px 70px #0009}
+header{height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,5vw,72px);background:color-mix(in srgb,var(--bg) 88%,transparent);position:sticky;top:0;z-index:10;backdrop-filter:blur(18px)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:20px;letter-spacing:-.5px}.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#8172ff,#c7baff);display:grid;place-items:center;color:#15132b;font-size:20px}
+header a{color:var(--muted);text-decoration:none}
+main{max-width:1220px;margin:auto;padding:38px 24px 70px}.hero{text-align:center;margin:10px auto 36px;max-width:760px}.eyebrow{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:3px;text-transform:uppercase}.hero h1{font-size:clamp(32px,5vw,56px);line-height:1.08;letter-spacing:-2px;margin:14px 0}.hero h1 span{color:var(--accent)}.hero p{color:var(--muted);font-size:18px;margin:0 auto 22px;max-width:620px}
+.upload{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#17132e;font-weight:800;border:0;border-radius:14px;padding:15px 23px;cursor:pointer;box-shadow:0 10px 30px #8f82ff30}.upload:hover{filter:brightness(1.06);transform:translateY(-1px)}.small-note{font-size:12px;color:var(--muted);margin-top:12px}
+.reader{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow)}.reader-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}.bookname{font-size:18px;font-weight:750;overflow-wrap:anywhere}.reader-top .sub{font-size:12px;color:var(--muted)}.right-actions{display:flex;gap:10px;align-items:center}
+.btn{border:1px solid var(--line);background:transparent;color:var(--text);padding:10px 13px;border-radius:11px;cursor:pointer;font:inherit}.btn:hover{background:color-mix(in srgb,var(--accent) 12%,var(--panel))}.btn:disabled{opacity:.35;cursor:not-allowed}.stage{position:relative;min-height:360px;border-radius:18px;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:26px 12px;background:radial-gradient(ellipse at center,#344057 0%,#1a2435 48%,#111827 100%)}
+body[data-theme="light"] .stage{background:radial-gradient(ellipse at center,#e7eaf0,#cfd5df)}body[data-theme="wood"] .stage{background:repeating-linear-gradient(90deg,#5a3c27 0,#5a3c27 3px,#69472d 5px,#49301f 12px)}
+#book{margin:auto}.page{background:#fff;color:#20202a;overflow:hidden}.page img{width:100%;height:100%;display:block;object-fit:fill}.sample-page{width:100%;height:100%;padding:10%;background:linear-gradient(140deg,#fff,#f5f0e6);color:#2c2b33;display:flex;flex-direction:column;justify-content:space-between}.sample-page .s-label{font-size:10px;letter-spacing:2px;color:#777}.sample-page h2{font:700 28px/1.12 Georgia,serif;margin:12px 0}.sample-page p{font:13px/1.7 Georgia,serif;color:#4b4a50}.sample-page .s-foot{font-size:10px;color:#777;display:flex;justify-content:space-between}.sample-cover{background:linear-gradient(145deg,#18243c,#526b87);color:#fff;justify-content:center;text-align:center}.sample-cover h2{font-size:32px}.sample-cover p{color:#e2eaf5}.toolbar{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;padding:18px 0 4px}.toolbar .separator{height:26px;width:1px;background:var(--line);margin:0 5px}.pagebox{width:64px;text-align:center;padding:10px 5px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--text);font:inherit}.status{text-align:center;color:var(--muted);font-size:12px;min-height:20px;margin-top:12px}.below{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px}.theme-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.theme-controls label{font-size:12px;color:var(--muted)}select{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px}
+.thumb-panel{display:none;margin-top:16px;border-top:1px solid var(--line);padding-top:16px}.thumb-panel.open{display:block}.thumb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:10px;max-height:280px;overflow:auto}.thumb{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:5px;cursor:pointer;color:var(--muted);font-size:11px}.thumb img{width:100%;aspect-ratio:3/4;object-fit:contain;background:#fff;display:block;margin-bottom:5px}.thumb.active{border-color:var(--accent);box-shadow:0 0 0 2px #a99bff33}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}.hidden{display:none!important}
+@media(max-width:650px){header{height:64px;padding:0 16px}main{padding:24px 12px 45px}.hero{margin-bottom:25px}.hero p{font-size:15px}.reader{padding:12px;border-radius:18px}.stage{padding:14px 2px;min-height:280px}.reader-top{align-items:flex-start}.right-actions{width:100%;justify-content:space-between}.toolbar{gap:6px}.btn{padding:9px 10px;font-size:13px}.below{align-items:flex-start}.sample-page h2{font-size:22px}.sample-page p{font-size:10px}}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/page-flip/2.0.7/css/page-flip.min.css">
+</head>
+<body data-theme="dark">
+<header><div class="brand"><span class="logo">▤</span> PageTurn</div><a href="https://github.com/" target="_blank" rel="noopener">GitHub ↗</a></header>
+<main>
+<section class="hero"><div class="eyebrow">Your document, reimagined</div><h1>Turn a PDF into a <span>flipbook.</span></h1><p>Choose a PDF and read it like a real book. Your document stays in your browser.</p><label class="upload" for="pdfFile">↑ Upload Your PDF</label><input id="pdfFile" class="hidden" type="file" accept="application/pdf,.pdf"><div class="small-note">No account · No server upload · Works on mobile and desktop</div></section>
+<section class="reader">
+<div class="reader-top"><div><div class="bookname" id="bookName">Sample Book — The Art of Reading</div><div class="sub" id="pageCount">A short preview · 6 pages</div></div><div class="right-actions"><label class="btn" for="pdfFile">＋ New PDF</label><button class="btn" id="downloadBtn">↓ Download PDF</button></div></div>
+<div class="stage" id="stage"><div id="book"></div></div>
+<div class="toolbar">
+<button class="btn" id="firstBtn" title="First page">|‹</button><button class="btn" id="prevBtn" title="Previous page">←</button>
+<span id="pageLabel">Page</span><input class="pagebox" id="pageInput" type="number" min="1" value="1" aria-label="Page number"><span id="totalLabel">/ 6</span>
+<button class="btn" id="nextBtn" title="Next page">→</button><button class="btn" id="lastBtn" title="Last page">›|</button><span class="separator"></span>
+<button class="btn" id="zoomOut">−</button><button class="btn" id="zoomIn">＋</button><button class="btn" id="thumbBtn">▦ Thumbnails</button><button class="btn" id="soundBtn" aria-pressed="true">♬ Sound On</button><button class="btn" id="fullBtn">⛶ Fullscreen</button>
+</div>
+<div class="status" id="status">Sample book ready. Upload your PDF to start reading.</div>
+<div class="below"><div class="theme-controls"><label for="themeSelect">Background</label><select id="themeSelect"><option value="dark">Midnight</option><option value="light">Clean white</option><option value="wood">Wood table</option></select></div><div class="sub" style="color:var(--muted);font-size:12px">Drag a corner or tap an edge to turn pages</div></div>
+<div class="thumb-panel" id="thumbPanel"><div class="thumb-grid" id="thumbGrid"></div></div>
+</section>
+<footer>Made for reading · PDF processing stays on your device</footer>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/page-flip/2.0.7/js/page-flip.browser.min.js"></script>
+<script>
+(()=> {
+"use strict";
+const $=id=>document.getElementById(id);
+const pdfInput=$("pdfFile"),bookEl=$("book"),stage=$("stage");
+let flip=null,pdfDoc=null,currentFile=null,pageCount=6,zoom=1,soundOn=true,renderToken=0,thumbUrls=[],pageImages=[],thumbImages=[],audioCtx=null;
+const isMobile=()=>matchMedia("(max-width:650px)").matches;
+function setStatus(s){$("status").textContent=s}
+function clearBook(){if(flip){try{flip.destroy()}catch(e){}flip=null}bookEl.innerHTML="";pageImages=[];thumbImages=[]}
+function sizeBook(){const w=Math.max(180,Math.min(460,(stage.clientWidth-40)/2))*zoom;const h=Math.min(window.innerHeight*.72,Math.max(280,w*1.414));return {width:Math.round(w),height:Math.round(h)}}
+function initFlip(){const s=sizeBook();flip=new St.PageFlip(bookEl,{width:s.width,height:s.height,size:"stretch",minWidth:180,maxWidth:900,minHeight:250,maxHeight:1300,drawShadow:true,flippingTime:850,usePortrait:true,showCover:true, mobileScrollSupport:false,clickEventForward:true,swipeDistance:30,showPageCorners:true,disableFlipByClick:false});flip.loadFromHTML(bookEl.querySelectorAll(".page"));flip.on("flip",e=>{const n=e.data+1;$("pageInput").value=n;ensurePages(e.data);syncButtons();playPaper();});ensurePages(0);syncButtons()}
+function syncButtons(){const n=flip?flip.getCurrentPageIndex()+1:1;$("pageInput").value=n;$("totalLabel").textContent="/ "+pageCount;$("prevBtn").disabled=$("firstBtn").disabled=n<=1;$("nextBtn").disabled=$("lastBtn").disabled=n>=pageCount;const th=$("thumbGrid").querySelectorAll(".thumb");th.forEach((x,i)=>x.classList.toggle("active",i===n-1))}
+function go(n){if(!flip)return;n=Math.max(1,Math.min(pageCount,Math.floor(Number(n)||1)));flip.flip(n-1);syncButtons()}
+function playPaper(){if(!soundOn)return;try{audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();const ctx=audioCtx,now=ctx.currentTime;const buffer=ctx.createBuffer(1,Math.floor(ctx.sampleRate*.12),ctx.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*(1-i/data.length);const src=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();src.buffer=buffer;filter.type="bandpass";filter.frequency.value=1100;gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.035,now+.015);gain.gain.exponentialRampToValueAtTime(.0001,now+.12);src.connect(filter);filter.connect(gain);gain.connect(ctx.destination);src.start(now);src.stop(now+.13)}catch(e){}}
+function ensurePages(center){if(!bookEl.children.length)return;for(let i=Math.max(0,center-2);i<Math.min(pageCount,center+4);i++){const img=bookEl.children[i]?.querySelector("img");if(img&&!img.src&&pageImages[i])img.src=pageImages[i]}}
+function samplePages(){clearBook();pdfDoc=null;currentFile=null;pageCount=6;$("bookName").textContent="Sample Book — The Art of Reading";$("pageCount").textContent="A short preview · 6 pages";$("downloadBtn").disabled=true;
+const content=[
+["THE ART OF READING","A little room for curiosity","A book is a doorway. Turn a page and the world changes: a new idea, a new place, a new way to see something familiar.","sample-cover"],
+["A quiet beginning","Make space for wonder","Reading is not a race. It is a conversation between the page and your attention. Give an idea a moment to settle before moving on.",""],
+["Look closer","Details make the story","Notice the small things: a phrase that stays with you, a diagram that makes sense at last, or a question you had never thought to ask.",""],
+["Take your time","One page at a time","The best reading experience is the one that lets you focus. Find a comfortable pace and let the pages carry you forward.",""],
+["Keep exploring","Curiosity has no last page","Return to a passage. Follow a footnote. Share what you learned. A good book keeps opening long after it is closed.",""],
+["THANK YOU","Your next book starts here","Upload your own PDF and turn it into a page-turning reading experience. Your document stays on your device.","sample-cover"]
+];
+content.forEach((p,i)=>{const el=document.createElement("div");el.className="page";el.innerHTML=`<div class="sample-page ${p[3]}"><div><div class="s-label">PAGETURN · SAMPLE</div><h2>${p[0]}</h2><p>${p[1]}</p><p>${p[2]}</p></div><div class="s-foot"><span>PAGE TURN</span><span>${i+1}</span></div></div>`;bookEl.appendChild(el)});
+initFlip();makeSampleThumbs();syncButtons();setStatus("Sample book ready. Upload your PDF to start reading.");
+}
+function makeSampleThumbs(){thumbUrls=[];$("thumbGrid").innerHTML="";for(let i=0;i<pageCount;i++){const b=document.createElement("button");b.className="thumb";b.innerHTML=`<div style="aspect-ratio:3/4;background:linear-gradient(140deg,#fefcf5,#e8e1d5);display:grid;place-items:center;color:#4c5260;font:12px Georgia,serif">Page ${i+1}</div>${i+1}`;b.onclick=()=>go(i+1);$("thumbGrid").appendChild(b)}}
+async function loadPdf(file){if(!file)return;if(file.type!=="application/pdf"&&!file.name.toLowerCase().endsWith(".pdf")){setStatus("Please choose a PDF file.");return}
+const token=++renderToken;setStatus("Opening PDF…");clearBook();if(pdfDoc){try{await pdfDoc.destroy()}catch(e){}}thumbUrls.forEach(u=>URL.revokeObjectURL(u));pageImages.forEach(u=>URL.revokeObjectURL(u));thumbUrls=[];pageImages=[];thumbImages=[];
+currentFile=file;$("bookName").textContent=file.name;$("downloadBtn").disabled=false;
+try{
+const bytes=await file.arrayBuffer();if(token!==renderToken)return;
+pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+pdfDoc=await pdfjsLib.getDocument({data:bytes,disableAutoFetch:true,disableStream:true}).promise;pageCount=pdfDoc.numPages;$("pageCount").textContent=`${pageCount} pages`;setStatus(`Preparing pages · 0 / ${pageCount}`);
+const s=sizeBook(),renderScale=Math.min(1.6,Math.max(1.05,(window.devicePixelRatio||1)*.85)); // capped to reduce phone memory
+// Render compact JPEG pages sequentially, releasing each canvas immediately.
+for(let i=1;i<=pageCount;i++){
+if(token!==renderToken)return;
+const page=await pdfDoc.getPage(i),vp=page.getViewport({scale:renderScale});
+const maxPixels=1.65e6,ratio=Math.min(1,Math.sqrt(maxPixels/(vp.width*vp.height))),canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.floor(vp.width*ratio));canvas.height=Math.max(1,Math.floor(vp.height*ratio));
+const ctx=canvas.getContext("2d",{alpha:false});await page.render({canvasContext:ctx,viewport:page.getViewport({scale:renderScale*ratio}),background:"#ffffff"}).promise;
+const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",.86));const url=URL.createObjectURL(blob);thumbUrls.push(url);pageImages.push(url);
+canvas.width=canvas.height=0;page.cleanup();
+const div=document.createElement("div");div.className="page";const img=document.createElement("img");img.loading="lazy";img.alt=`PDF page ${i}`;img.src=url;div.appendChild(img);bookEl.appendChild(div);
+if(i%5===0||i===pageCount)setStatus(`Preparing pages · ${i} / ${pageCount}`);
+}
+if(token!==renderToken)return;
+initFlip();makeThumbs();syncButtons();setStatus(`Flipbook ready · ${pageCount} pages. Turn pages to read.`);
+}catch(err){console.error(err);setStatus("Could not open this PDF. Try a smaller or unprotected PDF.");}
+}
+function makeThumbs(){const grid=$("thumbGrid");grid.innerHTML="";thumbImages.forEach((src,i)=>{const b=document.createElement("button");b.className="thumb";const img=document.createElement("img");img.loading="lazy";img.src=src;img.alt=`Page ${i+1}`;const label=document.createElement("span");label.textContent=i+1;b.append(img,label);b.onclick=()=>go(i+1);grid.appendChild(b)})}
+pdfInput.addEventListener("change",e=>loadPdf(e.target.files[0]));
+$("prevBtn").onclick=()=>flip&&flip.flipPrev();$("nextBtn").onclick=()=>flip&&flip.flipNext();$("firstBtn").onclick=()=>go(1);$("lastBtn").onclick=()=>go(pageCount);$("pageInput").addEventListener("change",e=>go(e.target.value));$("pageInput").addEventListener("keydown",e=>{if(e.key==="Enter")go(e.target.value)});
+$("zoomIn").onclick=()=>{zoom=Math.min(1.35,zoom+.1);rebuildSizing()};$("zoomOut").onclick=()=>{zoom=Math.max(.65,zoom-.1);rebuildSizing()};
+function rebuildSizing(){if(!flip)return;const n=flip.getCurrentPageIndex();const s=sizeBook();try{flip.updateFromHtml(bookEl.querySelectorAll(".page"));flip.turnToPage(n)}catch(e){console.warn(e)}}
+$("thumbBtn").onclick=()=>{$("thumbPanel").classList.toggle("open");$("thumbBtn").textContent=$("thumbPanel").classList.contains("open")?"▦ Hide thumbnails":"▦ Thumbnails"};
+$("soundBtn").onclick=()=>{soundOn=!soundOn;$("soundBtn").textContent=soundOn?"♬ Sound On":"♬ Sound Off";$("soundBtn").setAttribute("aria-pressed",soundOn)};
+$("themeSelect").onchange=e=>document.body.dataset.theme=e.target.value;
+$("fullBtn").onclick=async()=>{const el=$("reader");try{if(!document.fullscreenElement)await el.requestFullscreen();else await document.exitFullscreen()}catch(e){setStatus("Fullscreen isn't supported in this browser.")}};
+document.addEventListener("fullscreenchange",()=>setTimeout(rebuildSizing,250));let resizeTimer;window.addEventListener("resize",()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(rebuildSizing,350)});
+$("downloadBtn").onclick=()=>{if(!currentFile)return;const url=URL.createObjectURL(currentFile),a=document.createElement("a");a.href=url;a.download=currentFile.name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+samplePages();
+})();
+</script>
+</body></html>

@@ -29,6 +29,8 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}.hidd
 .page::after{content:"";position:absolute;inset:0;pointer-events:none}
 .page.--left::after{background:linear-gradient(to left,rgba(0,0,0,.2),rgba(0,0,0,.05) 7%,transparent 16%),linear-gradient(to right,rgba(0,0,0,.06),transparent 4%)}
 .page.--right::after{background:linear-gradient(to right,rgba(0,0,0,.2),rgba(0,0,0,.05) 7%,transparent 16%),linear-gradient(to left,rgba(0,0,0,.06),transparent 4%)}
+.zone{position:absolute;z-index:60;display:none;cursor:pointer;touch-action:none;border-radius:2px;transition:background .2s,box-shadow .2s}
+.zone:hover{background:rgba(255,255,255,.14);box-shadow:inset 0 0 14px rgba(0,0,0,.14)}
 </style>
 
 </head>
@@ -58,7 +60,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}.hidd
 "use strict";
 const $=id=>document.getElementById(id);
 const stage=$("stage"),pdfInput=$("pdfFile");
-let flip=null,bookEl=null,pdfDoc=null,currentFile=null,pageCount=6,zoom=1,soundOn=true,token=0,aspect=1.414,cur={w:300,h:424,landscape:true},sample=true,pages=[],thumbEls=[],audioCtx=null,noiseBuf=null,thumbUrls=[],pageUrls=[],imgEls=[],pageRes=[],sharpTimer,sharpening=false,sharpAgain=false,multi=false,wrapEl=null,edgeL=null,edgeR=null;
+let flip=null,bookEl=null,pdfDoc=null,currentFile=null,pageCount=6,zoom=1,soundOn=true,token=0,aspect=1.414,cur={w:300,h:424,landscape:true},sample=true,pages=[],thumbEls=[],audioCtx=null,noiseBuf=null,thumbUrls=[],pageUrls=[],imgEls=[],pageRes=[],sharpTimer,sharpening=false,sharpAgain=false,multi=false,wrapEl=null,edgeL=null,edgeR=null,zoneL=null,zoneR=null,flipState="read";
 const setStatus=s=>$("status").textContent=s;
 const isMobile=()=>matchMedia("(max-width:650px)").matches;
 
@@ -84,7 +86,9 @@ function build(start=0){
  wrapEl=document.createElement("div");wrapEl.id="wrap";
  bookEl=document.createElement("div");bookEl.id="book";
  edgeL=document.createElement("div");edgeR=document.createElement("div");edgeL.className=edgeR.className="edge";
- wrapEl.append(edgeL,edgeR,bookEl);stage.appendChild(wrapEl);
+ zoneL=document.createElement("div");zoneR=document.createElement("div");zoneL.className=zoneR.className="zone";
+ flipState="read";bindZone(zoneL,-1);bindZone(zoneR,1);
+ wrapEl.append(edgeL,edgeR,bookEl,zoneL,zoneR);stage.appendChild(wrapEl);
  if(!window.St||typeof St.PageFlip!=="function"){setStatus("Page-turn library failed to load. Check your internet connection and refresh.");return}
  cur=layout();
  bookEl.style.pointerEvents=zoom>1?'none':'';stage.style.touchAction=zoom>1?'auto':'pan-y pinch-zoom';
@@ -99,12 +103,12 @@ function build(start=0){
  try{
   flip=new St.PageFlip(bookEl,{width:cur.w,height:cur.h,size:"fixed",showCover:true,usePortrait:true,drawShadow:true,flippingTime:900,maxShadowOpacity:.65,mobileScrollSupport:false,swipeDistance:20,showPageCorners:!isMobile(),clickEventForward:true,useMouseEvents:true});
   flip.loadFromHTML(bookEl.querySelectorAll(".page"));
-  flip.on("flip",()=>{syncButtons();sharpen();setTimeout(updateEdges,60)});
-  flip.on("changeState",e=>{if(e.data==="flipping")playPaper();if(e.data==="read")setTimeout(updateEdges,30)});
+  flip.on("flip",()=>{syncButtons();sharpen();setTimeout(updateAll,60)});
+  flip.on("changeState",e=>{flipState=e.data;if(e.data==="flipping")playPaper();if(e.data==="read")setTimeout(updateAll,30)});
   if(start)flip.turnToPage(Math.min(start,pageCount-1));
  }catch(err){console.error(err);setStatus("Flip animation could not start: "+err.message)}
 
- syncButtons();setTimeout(updateEdges,200);if(!sample)sharpen();
+ syncButtons();setTimeout(updateAll,200);if(!sample)sharpen();
 }
 function updateEdges(){
  if(!flip||!wrapEl)return;
@@ -118,6 +122,33 @@ function updateEdges(){
  };
  place(edgeL,vis("--left"),(r,t)=>r.left-t,max*idx/n);
  place(edgeR,vis("--right"),r=>r.right,max*(n-idx-1)/n);
+}
+/* ---- edge click / drag zones: ~0.25in (24px) strip along the outer edge of each page, full height ---- */
+const visPage=c=>[...bookEl.querySelectorAll(".page."+c)].find(p=>p.style.display!=="none"&&p.getBoundingClientRect().width>2);
+function updateAll(){updateEdges();updateZones()}
+function updateZones(){
+ if(!flip||!wrapEl)return;
+ const hide=()=>zoneL.style.display=zoneR.style.display="none";
+ if(zoom>1)return hide();
+ const wr=wrapEl.getBoundingClientRect(),idx=flip.getCurrentPageIndex(),n=pageCount;
+ const put=(z,pg,x,show)=>{
+  if(!pg||!show){z.style.display="none";return}
+  const r=pg.getBoundingClientRect(),w=Math.min(24,r.width*.15);
+  z.style.cssText=`display:block;top:${r.top-wr.top}px;height:${r.height}px;width:${w}px;left:${x(r,w)-wr.left}px`;
+ };
+ if(cur.landscape){put(zoneL,visPage("--left"),r=>r.left,idx>0);put(zoneR,visPage("--right"),(r,w)=>r.right-w,idx<n-1)}
+ else{const p=visPage("--right")||visPage("--left");put(zoneL,p,r=>r.left,idx>0);put(zoneR,p,(r,w)=>r.right-w,idx<n-1)}
+}
+function bindZone(el,dir){
+ let st=null;
+ const pos=e=>{const r=bookEl.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}};
+ el.addEventListener("pointerdown",e=>{if(!flip||zoom>1||flipState==="flipping")return;e.preventDefault();try{el.setPointerCapture(e.pointerId)}catch(_){}st={x:e.clientX,y:e.clientY,drag:false}});
+ el.addEventListener("pointermove",e=>{if(!st)return;
+  if(!st.drag&&Math.hypot(e.clientX-st.x,e.clientY-st.y)>6){st.drag=true;flip.startUserTouch(pos({clientX:st.x,clientY:st.y}))}
+  if(st.drag)flip.userMove(pos(e),true)});
+ const end=e=>{if(!st)return;const d=st.drag;st=null;
+  if(d)flip.userStop(pos(e));else if(e.type==="pointerup")dir<0?flip.flipPrev():flip.flipNext()};
+ el.addEventListener("pointerup",end);el.addEventListener("pointercancel",end);
 }
 function syncButtons(){
  const n=flip?flip.getCurrentPageIndex()+1:1;

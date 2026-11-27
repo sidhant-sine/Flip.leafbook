@@ -51,7 +51,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}.hidd
 "use strict";
 const $=id=>document.getElementById(id);
 const stage=$("stage"),pdfInput=$("pdfFile");
-let flip=null,bookEl=null,pdfDoc=null,currentFile=null,pageCount=6,zoom=1,soundOn=true,token=0,aspect=1.414,cur={w:300,h:424,landscape:true},sample=true,pages=[],thumbEls=[],audioCtx=null,noiseBuf=null,thumbUrls=[],pageUrls=[],imgEls=[];
+let flip=null,bookEl=null,pdfDoc=null,currentFile=null,pageCount=6,zoom=1,soundOn=true,token=0,aspect=1.414,cur={w:300,h:424,landscape:true},sample=true,pages=[],thumbEls=[],audioCtx=null,noiseBuf=null,thumbUrls=[],pageUrls=[],imgEls=[],pageRes=[],sharpTimer,sharpening=false,sharpAgain=false,multi=false;
 const setStatus=s=>$("status").textContent=s;
 const isMobile=()=>matchMedia("(max-width:650px)").matches;
 
@@ -77,6 +77,7 @@ function build(start=0){
  bookEl=document.createElement("div");bookEl.id="book";stage.appendChild(bookEl);
  if(!window.St||typeof St.PageFlip!=="function"){setStatus("Page-turn library failed to load. Check your internet connection and refresh.");return}
  cur=layout();
+ bookEl.style.pointerEvents=zoom>1?'none':'';stage.style.touchAction=zoom>1?'auto':'pan-y pinch-zoom';
  bookEl.style.width=(cur.landscape?cur.w*2+1:cur.w)+"px";bookEl.style.height=cur.h+"px";
  imgEls=[];
  for(let i=0;i<pageCount;i++){
@@ -88,11 +89,12 @@ function build(start=0){
  try{
   flip=new St.PageFlip(bookEl,{width:cur.w,height:cur.h,size:"fixed",showCover:true,usePortrait:true,drawShadow:true,flippingTime:800,maxShadowOpacity:.5,mobileScrollSupport:false,swipeDistance:20,showPageCorners:!isMobile(),clickEventForward:true,useMouseEvents:true});
   flip.loadFromHTML(bookEl.querySelectorAll(".page"));
-  flip.on("flip",()=>syncButtons());
+  flip.on("flip",()=>{syncButtons();sharpen()});
   flip.on("changeState",e=>{if(e.data==="flipping")playPaper()});
   if(start)flip.turnToPage(Math.min(start,pageCount-1));
  }catch(err){console.error(err);setStatus("Flip animation could not start: "+err.message)}
- syncButtons();
+
+ syncButtons();if(!sample)sharpen();
 }
 function syncButtons(){
  const n=flip?flip.getCurrentPageIndex()+1:1;
@@ -128,7 +130,7 @@ async function loadPdf(file){
  if(file.type!=="application/pdf"&&!file.name.toLowerCase().endsWith(".pdf")){setStatus("Please choose a PDF file.");return}
  const tok=++token;setStatus("Opening PDF…");
  const old=pdfDoc;pdfDoc=null;if(old){old.destroy().catch(()=>{})}
- thumbUrls.forEach(u=>URL.revokeObjectURL(u));pageUrls.forEach(u=>u&&URL.revokeObjectURL(u));thumbUrls=[];pageUrls=[];
+ thumbUrls.forEach(u=>URL.revokeObjectURL(u));pageUrls.forEach(u=>u&&URL.revokeObjectURL(u));thumbUrls=[];pageUrls=[];pageRes=[];
  currentFile=file;
  try{
   const bytes=await file.arrayBuffer();if(tok!==token)return;
@@ -141,25 +143,49 @@ async function loadPdf(file){
   renderAll(tok,doc);
  }catch(err){console.error(err);setStatus("Could not open this PDF: "+(err&&err.message||err))}
 }
+async function renderPage(doc,i,target,thumb){
+ const page=await doc.getPage(i+1),w0=page.getViewport({scale:1}).width,vp=page.getViewport({scale:target/w0});
+ const c=document.createElement("canvas");c.width=Math.floor(vp.width);c.height=Math.floor(vp.height);
+ await page.render({canvasContext:c.getContext("2d",{alpha:false}),viewport:vp,background:"#ffffff"}).promise;
+ let tb=null;
+ if(thumb){const tc=document.createElement("canvas");tc.width=140;tc.height=Math.round(140*c.height/c.width);tc.getContext("2d").drawImage(c,0,0,tc.width,tc.height);tb=await toBlob(tc,.75)}
+ const blob=await toBlob(c,.92),w=c.width;c.width=c.height=0;page.cleanup();
+ return{url:URL.createObjectURL(blob),turl:tb?URL.createObjectURL(tb):null,w};
+}
 async function renderAll(tok,doc){
  const dpr=Math.min(devicePixelRatio||1,2.5),maxW=isMobile()?1400:1900;
  for(let i=0;i<pageCount;i++){
   if(tok!==token)return;
   try{
-   const page=await doc.getPage(i+1),w0=page.getViewport({scale:1}).width;
-   const target=Math.min(maxW,Math.max(1000,cur.w*dpr*1.6)),vp=page.getViewport({scale:target/w0});
-   const c=document.createElement("canvas");c.width=Math.floor(vp.width);c.height=Math.floor(vp.height);
-   await page.render({canvasContext:c.getContext("2d",{alpha:false}),viewport:vp,background:"#ffffff"}).promise;
-   const tc=document.createElement("canvas");tc.width=140;tc.height=Math.round(140*c.height/c.width);tc.getContext("2d").drawImage(c,0,0,tc.width,tc.height);
-   const [blob,tb]=await Promise.all([toBlob(c,.92),toBlob(tc,.75)]);
-   c.width=c.height=0;page.cleanup();
-   if(tok!==token)return;
-   const url=URL.createObjectURL(blob),turl=URL.createObjectURL(tb);pageUrls[i]=url;thumbUrls.push(turl);
-   if(imgEls[i])imgEls[i].src=url;
-   const ti=thumbEls[i]&&thumbEls[i].querySelector("img");if(ti)ti.src=turl;
+   const r=await renderPage(doc,i,Math.min(maxW,Math.max(1000,cur.w*dpr*1.6)),true);
+   if(tok!==token){URL.revokeObjectURL(r.url);URL.revokeObjectURL(r.turl);return}
+   pageUrls[i]=r.url;pageRes[i]=r.w;thumbUrls.push(r.turl);
+   if(imgEls[i])imgEls[i].src=r.url;
+   const ti=thumbEls[i]&&thumbEls[i].querySelector("img");if(ti)ti.src=r.turl;
   }catch(e){console.warn("Page "+(i+1)+" failed",e)}
   setStatus(i===pageCount-1?`Flipbook ready · ${pageCount} pages. Drag a page corner or tap the arrows.`:`Rendering pages · ${i+1} / ${pageCount} (you can start reading now)`);
  }
+ sharpen();
+}
+/* re-render the pages you are looking at at the current zoom so they stay crisp */
+function sharpen(){
+ clearTimeout(sharpTimer);
+ sharpTimer=setTimeout(async()=>{
+  if(sample||!pdfDoc)return;
+  if(sharpening){sharpAgain=true;return}
+  sharpening=true;
+  const tok=token,doc=pdfDoc,need=Math.min(isMobile()?2200:3000,Math.max(1000,cur.w*Math.min(devicePixelRatio||1,2.5)*1.3)),c=flip?flip.getCurrentPageIndex():0;
+  for(const i of [c,c+1,c-1,c+2,c-2]){
+   if(i<0||i>=pageCount||tok!==token)continue;
+   if(!pageUrls[i]||(pageRes[i]||0)>=need*.9)continue;
+   try{
+    const r=await renderPage(doc,i,need,false);
+    if(tok!==token){URL.revokeObjectURL(r.url);return}
+    const old=pageUrls[i];pageUrls[i]=r.url;pageRes[i]=r.w;if(imgEls[i])imgEls[i].src=r.url;if(old)setTimeout(()=>URL.revokeObjectURL(old),1500);
+   }catch(e){console.warn(e)}
+  }
+  sharpening=false;if(sharpAgain){sharpAgain=false;sharpen()}
+ },350);
 }
 
 /* ---------- page-turn sound: crinkly paper swish + soft thwap ---------- */
@@ -191,8 +217,19 @@ pdfInput.addEventListener("change",e=>{loadPdf(e.target.files[0]);e.target.value
 $("prevBtn").onclick=()=>flip&&flip.flipPrev();$("nextBtn").onclick=()=>flip&&flip.flipNext();
 $("firstBtn").onclick=()=>go(1);$("lastBtn").onclick=()=>go(pageCount);
 $("pageInput").addEventListener("change",e=>go(e.target.value));
-$("zoomIn").onclick=()=>{zoom=Math.min(2,+(zoom+.2).toFixed(1));rebuild()};
-$("zoomOut").onclick=()=>{zoom=Math.max(.6,+(zoom-.2).toFixed(1));rebuild()};
+const zoomHint=()=>{if(zoom>1)setStatus("Zoomed in — drag or scroll to look around. Use the arrows (or ← →) to turn pages.");else if(!sample)setStatus("Drag a page corner or tap the arrows to turn pages.")};
+$("zoomIn").onclick=()=>{zoom=Math.min(2,+(zoom+.2).toFixed(1));rebuild();zoomHint()};
+$("zoomOut").onclick=()=>{zoom=Math.max(.6,+(zoom-.2).toFixed(1));rebuild();zoomHint()};
+addEventListener("keydown",e=>{if(e.target.tagName==="INPUT"||!flip)return;if(e.key==="ArrowRight")flip.flipNext();else if(e.key==="ArrowLeft")flip.flipPrev()});
+/* when zoomed, drag with mouse/pen to pan (flipping is switched off so nothing turns by accident) */
+let pan=null;
+stage.addEventListener("pointerdown",e=>{if(zoom>1&&e.pointerType!=="touch")pan={x:e.clientX,y:e.clientY,l:stage.scrollLeft,t:stage.scrollTop}});
+addEventListener("pointermove",e=>{if(!pan)return;stage.scrollLeft=pan.l-(e.clientX-pan.x);stage.scrollTop=pan.t-(e.clientY-pan.y)});
+addEventListener("pointerup",()=>pan=null);
+/* two-finger pinch must never be read as a page swipe */
+stage.addEventListener("touchstart",e=>{if(e.touches.length>1){multi=true;e.stopPropagation()}},{capture:true,passive:true});
+stage.addEventListener("touchmove",e=>{if(multi||e.touches.length>1)e.stopPropagation()},{capture:true,passive:true});
+["touchend","touchcancel"].forEach(ev=>stage.addEventListener(ev,e=>{if(multi){e.stopPropagation();if(e.touches.length===0)multi=false}},{capture:true,passive:true}));
 $("thumbBtn").onclick=()=>{const o=$("thumbPanel").classList.toggle("open");$("thumbBtn").textContent=o?"▦ Hide thumbnails":"▦ Thumbnails"};
 $("soundBtn").onclick=()=>{soundOn=!soundOn;$("soundBtn").textContent=soundOn?"♬ Sound On":"♬ Sound Off";$("soundBtn").setAttribute("aria-pressed",soundOn)};
 $("themeSelect").onchange=e=>document.body.dataset.theme=e.target.value;
